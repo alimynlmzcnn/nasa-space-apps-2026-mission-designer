@@ -1,0 +1,11 @@
+NASA photographs used for the planets (all public domain; sourced via Wikimedia Commons). Verify before the final submission.
+earth.png   - 'The Blue Marble' (remastered), NASA / Apollo 17 crew, 1972
+moon.png    - Full disc of the Moon photographed by the Apollo 17 crew (NASA)
+mars.png    - Viking orbiter mosaic of Mars (Valles Marineris hemisphere), NASA / USGS
+venus.png   - Venus, Mariner 10 (NASA/JPL-Caltech)
+jupiter.png - Jupiter, Hubble Space Telescope WFC3, 21 April 2014 (NASA, ESA, A. Simon / Goddard Space Flight Center)
+Processing: cropped to the planet disc and masked to a circle; no other changes.
+
+assets/nasa/earth_hi.jpg: higher-resolution crop of the same NASA Earth photo, used for the large Earth at the bottom of the ascent, orbit and departure scenes.
+
+sun.png     - The Sun, NASA Solar Dynamics Observatory (SDO) Atmospheric Imaging Assembly, 19 August 2010 (NASA/SDO/AIA, public domain; sourced via Wikimedia Commons, "The Sun by the Atmospheric Imaging Assembly of NASA's Solar Dynamics Observatory - 20100819.jpg"). Cropped to the solar disc and masked to a circle. The orange colours are false colour (extreme-ultraviolet light), as in NASA's own image.
