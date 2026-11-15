@@ -3,7 +3,7 @@
 const Scene = (() => {
   const { G, PAD, D } = Game;
   const SP = window.SPRITES, IMG = {};
-  let cv, g, W = 0, H = 0, DPR = 1;
+  let cv, g, W = 0, H = 0, DPR = 1, TS = 1;   // TS: text scale, grows on small (phone) screens so notes stay readable
   const view = { s: 1, ox: 0, oy: 0 };
   const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
@@ -36,6 +36,7 @@ const Scene = (() => {
     DPR = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight;
     cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
     view.s = Math.min(W / 1280, H / 720); view.ox = (W - 1280 * view.s) / 2; view.oy = (H - 720 * view.s) / 2;
+    TS = Math.max(1, Math.min(1.5, 0.72 / view.s));
   }
   const toLogical = (px, py) => [(px - view.ox) / view.s, (py - view.oy) / view.s];
   const visRect = () => ({ x0: -view.ox / view.s, y0: -view.oy / view.s, x1: (W - view.ox) / view.s, y1: (H - view.oy) / view.s });
@@ -72,7 +73,7 @@ const Scene = (() => {
     g.fillStyle = q; g.beginPath(); g.moveTo(x - half, y); g.lineTo(x + half, y); g.lineTo(x + half + spread, y + len); g.lineTo(x - half - spread, y + len); g.fill();
   }
   function label(x, y, txt, size = 11, color = "#e9eef7", align = "center", weight = 700) {
-    g.font = `${weight} ${size}px -apple-system,"Segoe UI",Helvetica,Arial,sans-serif`; g.textAlign = align; g.fillStyle = color; g.fillText(txt, x, y); g.textAlign = "left";
+    g.font = `${weight} ${size * TS}px -apple-system,"Segoe UI",Helvetica,Arial,sans-serif`; g.textAlign = align; g.fillStyle = color; g.fillText(txt, x, y); g.textAlign = "left";
   }
   function tileBg(name, vis, off, tw, th, xo = 0) {
     const im = IMG[name]; off = ((off % th) + th) % th;
@@ -415,12 +416,12 @@ const Scene = (() => {
     const pul = 0.6 + 0.4 * Math.sin(t * 5);
     for (const q of hs) { const r = q.r; g.save(); g.strokeStyle = `rgba(255,154,82,${pul})`; g.lineWidth = 3; g.shadowColor = "#ff9a52"; g.shadowBlur = 14; g.beginPath(); g.roundRect(r[0] - 4, r[1] - 4, r[2] + 8, r[3] + 8, 10); g.stroke(); g.restore(); }
     const q0 = hs[0], ax = q0.r[0] + q0.r[2] / 2, ay = q0.r[1] + q0.r[3] / 2, info = D.parts[hoverId], left = ax > 640, TW = 360;
-    const tl = wrap(info.title, TW, 20), bl = wrap(info.text, TW, 15), x = left ? 40 : 1240 - TW, H = tl.length * 26 + bl.length * 21;
+    const tl = wrap(info.title, TW, 20 * TS), bl = wrap(info.text, TW, 15 * TS), x = left ? 40 : 1240 - TW, H = tl.length * 26 * TS + bl.length * 21 * TS;
     const y0 = yBase || 120, ex = left ? x + TW + 10 : x - 10, ey = y0 + 12;
     g.save(); g.strokeStyle = "#ffb070"; g.lineWidth = 2; g.shadowColor = "rgba(10,6,40,.9)"; g.shadowBlur = 6; g.beginPath(); g.moveTo(ex, ey); g.lineTo(ax, ay); g.stroke(); g.shadowBlur = 0;
     g.fillStyle = "#ffb070"; g.beginPath(); g.arc(ax, ay, 5, 0, 7); g.fill(); g.restore();
     const bw = TW + 60; g.save(); g.translate(x + TW / 2, y0 + H / 2); g.scale(bw / (H + 40), 1); const gq = g.createRadialGradient(0, 0, 0, 0, 0, (H + 40) / 2); gq.addColorStop(0, "rgba(8,4,34,.62)"); gq.addColorStop(0.7, "rgba(8,4,34,.4)"); gq.addColorStop(1, "rgba(8,4,34,0)"); g.fillStyle = gq; g.fillRect(-(H + 40) / 2, -(H + 40) / 2, H + 40, H + 40); g.restore();
-    let y = y0 + 20; for (const ln of tl) { ink(ln, x, y, 20, "#fff", "left", 800); y += 26; } for (const ln of bl) { ink(ln, x, y - 2, 15, "#f1f3ff", "left", 700); y += 21; }
+    let y = y0 + 20 * TS; for (const ln of tl) { ink(ln, x, y, 20 * TS, "#fff", "left", 800); y += 26 * TS; } for (const ln of bl) { ink(ln, x, y - 2, 15 * TS, "#f1f3ff", "left", 700); y += 21 * TS; }
   }
   const CMET = { f: "#4d4f99", t: "#8e90c2", s: "#34366f" }, CHAZ = { f: "#c9a227", t: "#e6c24a", s: "#8c7014" };
   function weldSparks(x, y, t) {
@@ -1037,11 +1038,11 @@ const Scene = (() => {
     for (let i = calls.length - 1; i >= 0; i--) {
       const c = calls[i], age = T - c.t0; if (age > c.ttl) { calls.splice(i, 1); continue; }
       const a = clamp(Math.min(age / 0.35, (c.ttl - age) / 0.6)), grow = ease(clamp(age / 0.5)), layer = c.kind === "layer", col = layer ? "#8fd0ff" : "#ffb070";
-      const TW = layer ? 340 : 410, tl = wrap(c.title, TW, 21); c.lines = c.lines || wrap(c.text, TW, 16);
-      const H = tl.length * 27 + c.lines.length * 22 + 4, [tx, ty, bh] = targetPos(c);
+      const TW = layer ? 340 : 410, tl = wrap(c.title, TW, 21 * TS); if (!c.lines || c.ts !== TS) { c.lines = wrap(c.text, TW, 16 * TS); c.ts = TS; }
+      const H = tl.length * 27 * TS + c.lines.length * 22 * TS + 4, [tx, ty, bh] = targetPos(c);
       const x = layer ? vis.x1 - 96 - TW : vis.x0 + 28, al = layer ? "right" : "left";
       const y0 = layer ? clamp(ty - H / 2, vis.y0 + 90, vis.y1 - H - 40) : vis.y1 - 34 - H;
-      g.font = `800 21px ${FONT}`; const tw0 = Math.max(...tl.map(l => g.measureText(l).width)), ex = layer ? x + TW + 10 : x + tw0 + 12, ey = y0 + 14;
+      g.font = `800 ${21 * TS}px ${FONT}`; const tw0 = Math.max(...tl.map(l => g.measureText(l).width)), ex = layer ? x + TW + 10 : x + tw0 + 12, ey = y0 + 14;
       g.save(); g.globalAlpha = a;
       if (bh) { g.strokeStyle = col; g.lineWidth = 4; g.lineCap = "round"; g.beginPath(); g.moveTo(tx + 10, ty - bh / 2 * grow); g.lineTo(tx + 10, ty + bh / 2 * grow); g.stroke(); }   // bracket along the layer's band
       const lx = ex + (tx - ex) * grow, ly = ey + (ty - ey) * grow;
@@ -1060,8 +1061,8 @@ const Scene = (() => {
         g.font = `${wt} ${size}px ${FONT}`; const fw = g.measureText(ln).width;
         ink(part, (layer ? x + TW - fw : x) + slide, y, size, col, "left", wt); y += dy;
       };
-      for (const ln of tl) type(ln, 21, "#fff", 800, 27);
-      y -= 1; for (const ln of c.lines) type(ln, 16, "#f1f3ff", 700, 22);
+      for (const ln of tl) type(ln, 21 * TS, "#fff", 800, 27 * TS);
+      y -= 1; for (const ln of c.lines) type(ln, 16 * TS, "#f1f3ff", 700, 22 * TS);
       g.restore();
     }
   }

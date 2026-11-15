@@ -1,7 +1,14 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#120a3a">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Space Mission Designer</title>
+<meta name="description" content="Educational space-mission simulation for NASA Space Apps Challenge 2026. Code and most artwork generated with AI (Claude, Anthropic); rocket illustrations by Ela Balım; planet photos by NASA. See README.md and CREDITS.md.">
+<meta name="generator" content="Claude (Anthropic): AI-generated code and sprites">
+<meta name="author" content="LA FAMILIA ES TODO">
+<!-- SI disclosure: code and most sprites were generated with Claude (Anthropic). Hand-drawn rocket art: Ela Balım. NASA photos: public domain. -->
+
 <style>
 :root{--ink:#e9eef7;--dim:#a9a6d8;--pan:rgba(20,12,70,.92);--line:#5a4cc0;--or:#ff7a3d;--mint:#5be3b0;color-scheme:dark}
 *{box-sizing:border-box}
@@ -137,13 +144,62 @@ button.pri{background:var(--or);border-color:#d95f26;color:#1a0d05}button.on{bac
 #title button{position:relative;z-index:2;font-size:26px;padding:16px 54px;border-radius:999px;letter-spacing:.08em;box-shadow:0 8px 0 #7a2f0b,0 18px 40px rgba(255,122,61,.45);animation:wup .9s .3s both,tpulse 2.4s 1.2s infinite}
 @keyframes tpulse{50%{transform:scale(1.06)}}
 #title .foot{position:absolute;bottom:14px;left:0;right:0;font-size:12px;color:#8e8bc8;z-index:1}
+
+/* ---- phones and tablets: touch, safe areas, compact layout ---- */
+html,body{-webkit-tap-highlight-color:transparent;overscroll-behavior:none}
+body{touch-action:manipulation;-webkit-touch-callout:none}
+#c{touch-action:none;-webkit-user-select:none;user-select:none}
+.chip,button,.wc{-webkit-user-select:none;user-select:none}
+#wiz{overflow:auto}
+#rot{position:fixed;inset:0;z-index:60;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:24px;background:radial-gradient(ellipse at 50% 40%,#2a1a7a 0,#150c46 55%,#0b0630 100%)}
+#rot .ph{font-size:64px;animation:rrot 2.6s ease-in-out infinite}
+@keyframes rrot{0%,25%{transform:rotate(0)}60%,100%{transform:rotate(-90deg)}}
+#rot h2{margin:0;font-size:24px}#rot p{margin:0;color:var(--dim);font-size:15px;max-width:300px;line-height:1.4}
+@media (orientation:portrait) and (max-width:820px) and (pointer:coarse){#rot:not(.skip){display:flex}}
+@media (hover:none){   /* no sticky hover on touch: a tap must act at once, and the card notes stay visible */
+ .wc:hover{transform:none;border-color:rgba(120,100,230,.5);box-shadow:0 10px 30px rgba(0,0,0,.4)}
+ .wc:hover .pic img{transform:none}.wc:hover .pic img.planet{animation-duration:90s}
+ .wc .more,.wc:hover .more{max-height:none;opacity:1;margin-top:8px}
+ #sum .chip:hover{transform:none;border-color:var(--line);background:rgba(0,0,0,.28)}#sum .chip:hover img{transform:none}
+ #econ .ct:hover{transform:none;border-color:rgba(130,110,240,.5);box-shadow:none}#econ .rs:hover{transform:none;border-color:rgba(130,110,240,.3)}
+}
+@media (pointer:coarse){button{min-height:40px}.seg button{min-height:34px}#cfg input[type=range]{height:30px}}
+@media (max-height:520px),(max-width:760px){
+ #top{top:6px;left:calc(8px + env(safe-area-inset-left));right:calc(8px + env(safe-area-inset-right))}
+ button{padding:6px 11px;font-size:13px}.chip{padding:5px 10px;font-size:12px}
+ #hud{top:44px;left:calc(8px + env(safe-area-inset-left));gap:4px;font-size:12px}
+ #alt{top:44px;bottom:10px;right:calc(8px + env(safe-area-inset-right));width:16px}
+ #karm{display:none!important}   /* the red line on the gauge stays; the Kármán note also appears as a flight event */
+ #hint{top:42px;left:calc(8px + env(safe-area-inset-left));transform:none;text-align:left;font-size:12px;padding:5px 10px;max-width:46vw}
+ #nav{bottom:calc(8px + env(safe-area-inset-bottom));gap:6px}
+ #info{bottom:56px;width:min(440px,62vw);padding:8px 12px}#info h3,#card h3{font-size:14px;margin-bottom:3px}#info p,#card p{font-size:12px;line-height:1.35}
+ #card{left:calc(8px + env(safe-area-inset-left));bottom:10px;width:min(330px,46vw);padding:8px 12px}
+ #cfg{top:42px;right:calc(8px + env(safe-area-inset-right));width:min(300px,50vw);max-height:calc(100dvh - 50px);padding:10px}
+ #cfg h3{font-size:14px;margin-bottom:4px}#cfg .lab{margin:5px 0 3px}#cfg .r{margin:5px 0}#cfg .out{margin:6px 0;padding:6px 8px;font-size:12px}
+ #sum .chip img{height:34px}#sum .chip img.planet{width:34px}
+ #repbtn{bottom:calc(14px + env(safe-area-inset-bottom));font-size:15px;padding:9px 18px}
+ #report{padding:8px}#report .sheet{padding:14px}#report h1{font-size:19px}#report h2{margin:12px 0 6px;font-size:14px}
+ #report .hb span{width:92px}#report .hb b{width:64px}#report .kpi b{font-size:17px}#report table{font-size:13px}
+ #wiz{padding:44px 10px 10px;justify-content:flex-start}
+ #wiz h2{font-size:20px}#wiz .sub{font-size:12px;margin-bottom:8px}#wiz .crumbs{margin-bottom:6px}#wiz .crumbs button{min-height:0;padding:3px 10px}
+ #wiz .cards{gap:8px}
+ .wc{width:140px;padding:8px 8px 10px;border-radius:12px}.wc.big{width:210px;padding:10px}
+ .wc .pic,.wc.big .pic{height:74px;margin-bottom:4px}.wc.big .pic{height:120px}
+ .wc .pic img.planet{width:64px;height:64px}.wc .pic img.top{width:44px;height:74px}
+ .wc h3{font-size:14px}.wc .tag{font-size:10.5px;min-height:0}.wc .stats{margin-top:5px}.wc .stats span{font-size:10px;padding:2px 6px}
+ .wc .more,.wc:hover .more{display:none}
+ #econ .wrap{padding:10px 10px 24px}#econ h1{font-size:22px}#econ .kpi{padding:6px 10px;min-width:92px}#econ .kpi b{font-size:18px}
+ #econ table{display:block;overflow-x:auto}#econ .cards{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}
+ #title p{font-size:13px;margin-bottom:10px;padding:0 16px}#title button{font-size:20px;padding:12px 38px}#title .foot{bottom:8px;color:#d9daff;text-shadow:0 1px 8px #000,0 0 3px #000}
+}
 </style></head><body>
 <canvas id="c"></canvas>
 <div id="title"><div class="stars"></div><div class="earth"></div>
 <h1><small>NASA SPACE APPS · BURSA 2026</small>SPACE MISSION DESIGNER</h1>
 <p>Design a rocket, pick a world, launch it and learn the real science: Δv, atmosphere layers, orbits, real spacecraft.</p>
 <button class="pri" id="playBtn">▶ PLAY GAME</button>
-<div class="foot">Click or press Enter · Planet photos: NASA</div></div>
+<div class="foot" id="foot">Click or press Enter · Sound on · Planet photos: NASA</div></div>
+<div id="rot"><div class="ph">📱</div><h2>Turn your phone sideways</h2><p>Space Mission Designer is made for a wide screen. Rotate your phone to play.</p><button id="rotSkip">Play in portrait anyway</button></div>
 <div id="top"><div><button id="snd"></button><div class="chip box" id="bud"></div></div><div><button id="speed" style="display:none"></button><button id="back" style="display:none">← Mission Control</button></div></div>
 <div id="hud"><div class="chip box"><i id="lT">Time</i> <span id="hT"></span></div><div class="chip box"><i id="lA">Altitude</i> <span id="hA"></span></div><div class="chip box"><i id="lV">Speed</i> <span id="hV"></span></div><div class="chip box"><i id="lL">Layer</i> <span id="hL"></span></div></div>
 <div id="alt"><b title="Kármán line"></b><i id="altm"></i></div>

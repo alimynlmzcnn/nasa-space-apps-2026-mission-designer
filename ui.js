@@ -3,7 +3,8 @@
 (() => {
   const { G, D, WD } = Game, $ = id => document.getElementById(id), cv = $("c");
   const show = (id, v, mode = "block") => { $(id).style.display = v ? mode : "none"; };
-  let snd = false, ac = null, rumble = null, cardT = 0, bannerT = 0, infoT = 0, econTab = "contracts";
+  const TOUCH = matchMedia("(pointer:coarse)").matches, TAP = TOUCH ? "Tap" : "Click";
+  let snd = true, ac = null, rumble = null, cardT = 0, bannerT = 0, infoT = 0, econTab = "contracts";
   const f1 = (v, n = 1) => v.toLocaleString("en-US", { minimumFractionDigits: n, maximumFractionDigits: n });
   const money = v => (v < 0 ? "−$" : "$") + Math.abs(Math.round(v)).toLocaleString("en-US") + "M";
   const fmtT = T => { const s = Math.abs(Math.floor(T)); return (T < 0 ? "T−" : "T+") + String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0"); };
@@ -26,8 +27,19 @@
     }
     rumble.gain.gain.value = level;
   }
-  const sndLabel = () => { $("snd").textContent = snd ? "Sound: on" : "Sound: off"; };
-  $("snd").onclick = () => { snd = !snd; if (snd && audio()) ac.resume(); sndLabel(); }; sndLabel();
+  const sndLabel = () => { $("snd").textContent = snd ? "🔊 Sound: on" : "🔇 Sound: off"; };
+  $("snd").onclick = () => { snd = !snd; if (snd && audio()) ac.resume(); else if (ac && rumble) rumble.gain.gain.value = 0; sndLabel(); }; sndLabel();
+  // Sound starts ON. Browsers only let audio start after a tap, click or key press, so the first one unlocks it
+  // (a silent buffer is played once: iPhones need that), and then these listeners remove themselves.
+  const UNLOCK = ["pointerdown", "touchend", "click", "keydown"];
+  function unlockAudio() {
+    if (!snd || !audio()) return;
+    if (ac.state === "suspended") ac.resume();
+    try { const s = ac.createBufferSource(); s.buffer = ac.createBuffer(1, 1, 22050); s.connect(ac.destination); s.start(0); } catch (e) {}
+    if (ac.state === "running") UNLOCK.forEach(ev => removeEventListener(ev, unlockAudio, true));
+  }
+  UNLOCK.forEach(ev => addEventListener(ev, unlockAudio, true));
+  document.addEventListener("visibilitychange", () => { if (!ac) return; if (document.hidden) ac.suspend(); else if (snd) ac.resume(); });
 
   // --- budget chip and scene-dependent interface ---
   function budget() { const S = Econ.S; $("bud").textContent = `${money(S.budget)} · Round ${Math.min(S.round, WD.season.rounds)}/${WD.season.rounds} · Rank ${Econ.rank()}`; }
@@ -79,8 +91,8 @@
     show("nav", base, "flex"); show("back", pad); show("speed", pad && m.phase !== "ready");
     const win = pad && m.phase === "done"; $("report").classList.toggle("win", !!(win && m.success)); $("report").classList.toggle("lose", !!(win && !m.success)); show("hud", pad && m.phase !== "ready" && !win, "flex"); show("alt", pad && m.phase !== "ready" && !deep && !win); show("karm", pad && m.phase !== "ready" && !deep && !win); show("cfg", pad && m.phase === "ready" && wiz >= 3); wizSync(); if (pad && m.phase === "ready" && wiz >= 3) { cfgSync(); sumRender(); }
     [...$("nav").children].forEach(b => b.classList.toggle("on", +b.dataset.i === G.room));
-    const hint = base ? (G.room === 1 ? "Click the big screen to go to the launch pad" : "Move the mouse over any part to learn what it does")
-      : pad && m.phase === "ready" ? "Pick a destination, set the fuel, then click the rocket or press Launch" : "";
+    const hint = base ? (G.room === 1 ? TAP + " the big screen to go to the launch pad" + (TOUCH ? " · swipe to change room" : "") : (TOUCH ? "Tap any part to learn what it does · swipe to change room" : "Move the mouse over any part to learn what it does"))
+      : pad && m.phase === "ready" ? "Pick a destination, set the fuel, then " + TAP.toLowerCase() + " the rocket or press Launch" : "";
     $("hint").textContent = hint; show("hint", !!hint);
     $("speed").textContent = "Speed ×" + G.fast; budget();
     if (!pad) { show("report", false); show("count", false); }
@@ -102,7 +114,15 @@
     else if (h.type === "rocket") { if (snd && audio()) ac.resume(); Game.launch(); }
     else if (h.type === "part") Scene.setHover(h.id);
   }
-  cv.addEventListener("click", e => act(Scene.hit(e.clientX, e.clientY)));
+  let noClickUntil = 0, sw = null;
+  cv.addEventListener("click", e => { if (performance.now() > noClickUntil) act(Scene.hit(e.clientX, e.clientY)); });
+  // touch: swipe left or right in the base to change room (the arrow keys do the same on a keyboard)
+  cv.addEventListener("pointerdown", e => { sw = e.pointerType === "touch" ? { x: e.clientX, y: e.clientY } : null; });
+  cv.addEventListener("pointerup", e => {
+    if (!sw) return; const dx = e.clientX - sw.x, dy = e.clientY - sw.y; sw = null;
+    if (G.scene === "base" && Math.abs(dx) > 70 && Math.abs(dx) > 2 * Math.abs(dy)) { noClickUntil = performance.now() + 400; Game.setRoom(G.room + (dx < 0 ? 1 : -1)); }
+  });
+  cv.addEventListener("pointercancel", () => { sw = null; });
   cv.addEventListener("mousemove", e => { const h = Scene.hit(e.clientX, e.clientY); cv.style.cursor = h ? "pointer" : "default"; Scene.setHover(h && h.type === "part" ? h.id : null); });
   cv.addEventListener("mouseleave", () => Scene.setHover(null));
   addEventListener("keydown", e => {
@@ -352,7 +372,7 @@ ${forFile ? "" : `<div class="row"><button class="pri" id="again">Plan the next 
     $("hV").textContent = Math.round(m.vel).toLocaleString("en-US") + " km/h"; $("hL").textContent = D.layers[m.layer].name;
     $("altm").style.bottom = altPct(m.alt) + "%";
     const c = m.T < 0 ? String(Math.ceil(-m.T)) : m.T < 6 ? "LIFTOFF!" : "";
-    if (c !== lastCount) { lastCount = c; $("count").textContent = c; show("count", !!c); $("count").style.fontSize = c.length > 2 ? "64px" : "120px"; if (c && c.length < 3) beep(440); }
+    if (c !== lastCount) { lastCount = c; $("count").textContent = c; show("count", !!c); $("count").style.fontSize = (innerHeight < 520 ? (c.length > 2 ? 40 : 76) : (c.length > 2 ? 64 : 120)) + "px"; if (c && c.length < 3) beep(440); }
     setRumble(m.T > m.tm.ign && m.T < m.tm.meco ? Math.max(0.05, 0.5 * Math.max(0, 1 - m.alt / 90)) : 0);
   }
 
@@ -369,7 +389,15 @@ ${forFile ? "" : `<div class="row"><button class="pri" id="again">Plan the next 
 
   // ---- title screen ----
   { const T = $("title"), q0 = new URLSearchParams(location.search), skip = [...q0.keys()].length > 0;
-    const go = () => { T.classList.add("out"); setTimeout(() => { T.style.display = "none"; }, 650); if (snd && audio()) ac.resume(); };
+    const go = () => {
+      T.classList.add("out"); setTimeout(() => { T.style.display = "none"; }, 650); if (snd && audio()) ac.resume();
+      if (TOUCH) {   // phones: try full screen and landscape (Android Chrome allows it after a tap; iPhones ignore it)
+        try { const el = document.documentElement, rq = el.requestFullscreen || el.webkitRequestFullscreen; if (rq && !document.fullscreenElement) { const p = rq.call(el); if (p && p.catch) p.catch(() => {}); } } catch (e) {}
+        try { const p = screen.orientation && screen.orientation.lock && screen.orientation.lock("landscape"); if (p && p.catch) p.catch(() => {}); } catch (e) {}
+      }
+    };
+    $("rotSkip").onclick = () => $("rot").classList.add("skip");
+    if (TOUCH) $("foot").textContent = "Tap Play · Sound on · Planet photos: NASA";
     if (skip) T.style.display = "none"; else { $("playBtn").onclick = go; addEventListener("keydown", e => { if (e.key === "Enter" && T.style.display !== "none" && !T.classList.contains("out")) go(); }); } }
   Scene.init(cv);
   Scene.load(() => {
