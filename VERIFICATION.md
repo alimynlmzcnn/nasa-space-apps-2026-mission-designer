@@ -10,10 +10,11 @@ What was checked: every real-world claim in `data/world.js` (destinations, satel
 | Europa Clipper | "reaches Europa in 2030" | reaches **Jupiter** in April 2030; first Europa flyby is 2031 | [NASA timeline](https://science.nasa.gov/mission/europa-clipper/mission-timeline), [JPL](https://www.jpl.nasa.gov/press-kits/europa-clipper/mission/) |
 | Parker Solar Probe | "uses Venus gravity assists" | used seven Venus assists (2018 to 2024); the last was 6 Nov 2024 | [NASA](https://science.nasa.gov/science-research/heliophysics/final-venus-flyby-for-nasas-parker-solar-probe-queues-closest-sun-pass) |
 | Hubble altitude | ~540 km | ~500 km, slowly sinking (NASA FAQ: about 300 miles, 483 km) | [NASA Hubble FAQ](https://science.nasa.gov/mission/hubble/overview/faqs/) |
-| RASAT | sounded active | added: planned for 3 years, worked about 11 (retired 2022; one source says 2023) | [TÜBİTAK UZAY](https://uzay.tubitak.gov.tr/en/?p=2308), [eoPortal](https://eoportal.org/satellite-missions/rasat) |
+| RASAT | sounded active | added: planned for 3 years, worked about 11 (retired 28 Aug 2022; eoPortal's quick-facts "2023" contradicts its own text) | [TÜBİTAK UZAY](https://uzay.tubitak.gov.tr/en/?p=2308), [eoPortal](https://eoportal.org/satellite-missions/rasat) |
 | Göktürk-1 orbit and builder | ~680 km, no builder | ~700 km; built by Telespazio and Thales Alenia Space | [Thales](https://www.thalesgroup.com/en/news-centre/press-releases/gokturk-1-satellite-launched-successfully), [Spaceflight Now](https://spaceflightnow.com/2016/12/05/turkeys-military-gets-a-new-eye-in-the-sky-with-successful-vega-launch/) |
 | Göktürk-2 | no details | added 2.5 m resolution, ~685 km, built by TUSAŞ and TÜBİTAK UZAY | [TÜBİTAK UZAY](https://uzay.tubitak.gov.tr/en/gokturk-2-satellite-achieves-12-years-of-operation-in-orbit/) |
-| İMECE | no resolution | added "about 1 m" (Wikipedia lists 0.99 m panchromatic) | [TÜBİTAK UZAY](https://uzay.tubitak.gov.tr/en/?p=3091) |
+| İMECE | no resolution | "smaller than 1 m (sub-metre)": TÜBİTAK says only "Submeter PAN, 3.96 m RGB-NIR", the 0.99 m figure is not from TÜBİTAK. Added: taken into the Turkish Air Force inventory as GÖKTÜRK-2B on 22 May 2025 | [TÜBİTAK UZAY](https://uzay.tubitak.gov.tr/en/imece/), [TÜBİTAK news](https://tubitak.gov.tr/en/node/17741), [DHA](https://www.dha.com.tr/teknoloji/imece-uydusu-hava-kuvvetleri-komutanligi-envanterine-alindi-2644841) |
+| CAPSTONE | "active" | "historic": NASA's activities on CAPSTONE concluded in June 2026; Advanced Space keeps using the spacecraft as a testbed | [NASA](https://www.nasa.gov/technology/space-comms/nasas-capstone-completes-extended-mission-testing-lunar-technologies) |
 | Jupiter radio delay | 33 to 53 min | 33 to 54 min (588.5 and 968.5 million km at the speed of light) | [NASA Jupiter fact sheet](https://nssdc.gsfc.nasa.gov/planetary/factsheet/jupiterfact.html) |
 | SLS thrust | "at liftoff" | "up to about 39 MN (8.8 million lb) at its maximum" (NASA lists 8.27 million lb at launch) | [NASA SLS](https://www.nasa.gov/reference/space-launch-system/) |
 | Launch abort system | "pulls the capsule away in under a second" | "within a few seconds (0 to 400-500 mph in about two seconds)" | [NASA LAS](https://www.nasa.gov/reference/launch-abort-system/) |
@@ -63,13 +64,19 @@ What was checked: every real-world claim in `data/world.js` (destinations, satel
 - **Layer boundaries** (troposphere 12 km, mesosphere 85 km and so on) vary with latitude and season. NASA pages differ a little between each other.
 - **Mission times:** Mars 210 days, Venus 150 days, Jupiter 1000 days are gameplay values near typical fast trajectories (Perseverance took about 6.5 months).
 
-## OPEN: please check by hand
+## Checked on 15 November 2026 (formerly OPEN)
 
-1. **Mars Odyssey** is listed as "active". 2026 trackers and Wikipedia say yes, but we found no NASA page for November 2026. Its propellant was predicted to last until the end of 2025. (Check NASA's Mars Odyssey mission page.)
-2. **Juno** is listed as "active". NASA's extended mission ran to September 2025; a 2026 report says the probe is healthy and funded, but we found no official NASA statement. ([JPL Juno](https://jpl.nasa.gov/missions/juno/))
-3. **CAPSTONE** and **ARTEMIS P1**: last confirmed operating in 2025 and 2017 respectively. Check NASA's pages. ([CAPSTONE](https://www.nasa.gov/blogs/artemis/2022/11/13/capstone-arrives-to-orbit-at-the-moon/), [ARTEMIS](https://science.nasa.gov/mission/themis-artemis))
-4. **Lunar Reconnaissance Orbiter**: listed as operational by NASA Goddard, no 2026 confirmation found. ([NASA](https://science.gsfc.nasa.gov/solarsystem/projects/29/))
-5. **RASAT retirement date:** August 2022 (Wikipedia) or August 2023 (eoPortal). Ask TÜBİTAK UZAY.
-6. **İMECE resolution:** one source says 0.99 m, another says only "sub-meter".
-7. **Mesosphere "about −90 °C"** in the lab text, **Venus 465 °C and 90 times Earth's pressure**, **Jupiter "sunlight about 4%"**, **Moon 384,400 km**, **Mars launch window every 26 months**, **Perseverance sky crane (Feb 2021)**: standard values, not re-checked here.
-8. **Max-Q for Artemis I:** we used the Artemis II time (about 1 min 10 s), because that is what the NASA press kit states.
+1. **Mars Odyssey:** NASA's page is labelled "Active Mission", last updated 7 Nov 2026, "2001 - ongoing", more than 100,000 orbits. No fuel estimate is given; the last one (2023) said enough "through the end of 2025". Kept as "active". ([NASA](https://science.nasa.gov/mission/odyssey/); the old address /mission/mars-odyssey/ gives a 404.)
+2. **Juno:** NASA's page is labelled "Active Mission", but its text still says "through September 2025". Wikipedia says it was operational on 6 Aug 2026 (second extended mission from Oct 2025). Space.com reports it may have ended but nobody can confirm, and CNES lists it as completed. Kept as "active" because of NASA's label; there is no official end statement. ([NASA](https://science.nasa.gov/mission/juno/))
+3. **CAPSTONE:** NASA's activities ended in June 2026. Changed to "historic" with that explanation (see the corrections table). ([NASA](https://www.nasa.gov/technology/space-comms/nasas-capstone-completes-extended-mission-testing-lunar-technologies))
+4. **ARTEMIS P1:** NASA's page is labelled "Active Mission" (updated 9 Jan 2026), but the only "operating in good health" sentence dates from 2017. Kept as "active". ([NASA](https://science.nasa.gov/mission/themis-artemis))
+5. **Lunar Reconnaissance Orbiter:** NASA's page is labelled "Active Mission", updated 27 Oct 2026. OK. ([NASA](https://science.nasa.gov/mission/lro/))
+6. **RASAT retirement:** 28 Aug 2022 (eoPortal mission text, a rail-news report of 28 Aug 2022, Hürriyet 29 Aug 2022, Wikipedia). The "29 Aug 2023" in eoPortal's quick-facts table contradicts its own text; 17 Aug 2011 plus 11 years also gives 2022. ([eoPortal](https://eoportal.org/satellite-missions/rasat))
+7. **İMECE resolution:** TÜBİTAK says "Submeter PAN, 3.96 m Red-Green-Blue-Near Infrared", about 680 km, launched 15 Apr 2023. The game now says "smaller than 1 m". ([TÜBİTAK UZAY](https://uzay.tubitak.gov.tr/en/imece/))
+8. **Standard values:** mesopause about −85 °C (NASA; the game no longer states −90 °C); Venus 464 to 467 °C and 90 to 93 times Earth's pressure (NASA fact sheet 464 °C and 92 bar); Jupiter sunlight about 4% (NASA Juno page; fact sheet gives 3.7%); Moon 384,400 km, about 1.3 s one way (NASA Space Place); Mars launch window about every 26 months and Perseverance landing 18 Feb 2021 with the sky crane (NASA/JPL press kit).
+9. **Max-Q:** NASA's Artemis I timeline lists max dynamic pressure at MET 00:01:10, booster separation 00:02:12, launch abort system jettison 00:03:16 and core stage engine cutoff 00:08:03. ([NASA](https://www.nasa.gov/reference/artemis-i-mission-timeline/))
+
+## STILL OPEN: please check by hand
+
+- **Core stage separation time:** the game uses 8:15 (495 s). An automated read of NASA's Artemis I timeline page returned 8:03 for the separation row, which looks like a reading error. Open the page and check the "Core stage/Interim cryogenic propulsion stage separation" row. ([NASA](https://www.nasa.gov/reference/artemis-i-mission-timeline/))
+- **İMECE as GÖKTÜRK-2B:** TÜBİTAK's own announcement page could not be opened by our tool; the 22 May 2025 date comes from the announcement's title and two news agencies (DHA, Haber7).

@@ -14,6 +14,7 @@ All atmosphere notes and planet events in the game come from these NASA pages. A
 - NASA TM, Neutral orbital altitude density effects on the ISS: https://ntrs.nasa.gov/citations/19970028145 (drag and reboost planning)
 
 ## Max-Q (`events[].alts`)
+- NASA Artemis I mission timeline: https://www.nasa.gov/reference/artemis-i-mission-timeline/ (max dynamic pressure at MET 00:01:10, booster separation 00:02:12, launch abort system jettison 00:03:16, core stage engine cutoff 00:08:03)
 - NASA Artemis II press kit: https://www.nasa.gov/artemis-ii-press-kit/ (Max Q about 1 min 10 s after liftoff, supersonic at +00:56)
 - NASA NTRS, SLS flight readiness analysis cycle approach: https://ntrs.nasa.gov/citations/20205004534 (core-stage "throttle bucket" through Max Q)
 

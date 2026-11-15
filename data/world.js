@@ -49,7 +49,7 @@ window.WORLD = {
     { id: "rasat", name: "RASAT · Türkiye's first domestic Earth observation satellite", s0: 16000, dalt: -2, pts: 150, fact: "RASAT was designed and built in Türkiye (TÜBİTAK UZAY) and launched in 2011 into a ~700 km sun-synchronous orbit. Its camera sees details of about 7.5 m. It was planned for 3 years and worked for about 11." },
     { id: "gokturk1", name: "Göktürk-1 · Turkish reconnaissance satellite", s0: 22500, dalt: 3, pts: 160, fact: "Göktürk-1 was launched in December 2016. It is a Turkish high-resolution (about 0.5 m) imaging satellite built by Telespazio and Thales Alenia Space, flying in a ~700 km sun-synchronous orbit." },
     { id: "gokturk", name: "Göktürk-2 · Turkish imaging satellite", s0: 29000, dalt: 6, pts: 130, fact: "Göktürk-2 is a Turkish imaging satellite (about 2.5 m resolution, ~685 km orbit) developed by TUSAŞ and TÜBİTAK UZAY and launched in December 2012. Imaging satellites fly over every point of Earth at the same local time, which makes before/after comparisons easy." },
-    { id: "imece", name: "İMECE · Türkiye's Earth observation satellite", s0: 35500, dalt: 1, pts: 200, fact: "İMECE is a high-resolution Earth observation satellite developed in Türkiye (TÜBİTAK UZAY) and launched in April 2023 into a ~680 km sun-synchronous orbit. It sees details of about 1 m." }
+    { id: "imece", name: "İMECE · Türkiye's Earth observation satellite", s0: 35500, dalt: 1, pts: 200, fact: "İMECE is a high-resolution Earth observation satellite developed in Türkiye (TÜBİTAK UZAY) and launched in April 2023 into a ~680 km sun-synchronous orbit. It sees details smaller than 1 m (sub-metre). In May 2025 it joined the Turkish Air Force inventory as GÖKTÜRK-2B." }
   ],   // altitudes are simplified for gameplay: real orbits differ by hundreds of km
   satW: 7.5,   // km/s ground-track speed of a low-orbit satellite
 
@@ -80,7 +80,7 @@ WORLD.dest.leo.orb = [
 WORLD.dest.outpost.orb = WORLD.dest.leo.orb;
 WORLD.dest.moon.orb = [
   { n: "Lunar Reconnaissance Orbiter (LRO)", st: "active", t: "Mapping the Moon from orbit since 2009" },
-  { n: "CAPSTONE", st: "active", t: "Cubesat testing the Gateway's halo orbit (2022)" },
+  { n: "CAPSTONE", st: "historic", t: "Cubesat that tested the Gateway's halo orbit from 2022. NASA's part of the mission ended in June 2026" },
   { n: "ARTEMIS P1", st: "active", t: "Two-probe mission studying the Moon's space environment" }
 ];
 WORLD.dest.mars.orb = [
